@@ -1,13 +1,19 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-INDEX
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for task in tasks %}
+    <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Название:
+        <a href="{% url 'TaskView' task.pk %}">{{ task.title }}</a></h5>
+{#    <h6 class="card-subtitle mb-2 text-muted">Название: {{ task.title }}</h6>#}
+    <p class="card-text">Статус: {{ task.status }}</p>
+    <a href="{% url 'UpdateTask' task.pk %}" class="card-link">Update</a>
+    <a href="{% url 'DeleteTask' task.pk %}" class="card-link">Delete</a>
+  </div>
+</div>
+    {%  endfor %}
+
+    <a href="#">Other</a>
+{%  endblock %}

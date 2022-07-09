@@ -1,0 +1,16 @@
+{%  extends 'base.html' %}
+{% block content %}
+    <i>Name:</i> <b>{{ task.title }}</b>
+    <br>
+    <i>Description:</i> <b>{{ task.description }}</b>
+    <br>
+    <i>Category:</i> <b>{{ task.category }}</b>
+    <br>
+    <i>Type: </i><b>{{ task.type }}</b>
+    <br>
+
+    <br>
+{#    <a href="{% url 'update_product' product.pk %}">Update</a>#}
+{#    <br>#}
+{#    <a href="{% url 'delete_product' product.pk %}">Delete</a>#}
+{% endblock %}
