@@ -28,7 +28,7 @@ class Task(BaseModel):
         verbose_name_plural='Задачи'
 
 class TaskType(models.Model):
-    type = models.CharField(max_length=20, choices=TYPES)
+    type = models.CharField(max_length=30,choices=TYPES)
 
     def __str__(self):
         return f'{self.type}'
