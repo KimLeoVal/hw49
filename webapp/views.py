@@ -8,7 +8,7 @@ from webapp.forms import TaskForm
 from webapp.models import Task
 
 
-class IndexView(View):
+class IndexView(TemplateView):
     def get(self, request):
         tasks = Task.objects.all()
         return render(request, 'index.html', {'tasks': tasks})
