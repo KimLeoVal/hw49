@@ -33,9 +33,10 @@ class CreateTask(View):
             title = form.cleaned_data.get("title")
             description = form.cleaned_data.get("description")
             status = form.cleaned_data.get("status")
-            type = form.cleaned_data.get("type")
-            new_task = Task.objects.create(title=title, description=description, status=status, type=type)
-            return redirect("TaskView", pk=new_task.pk)
+            type = form.cleaned_data.pop('type')
+            new_task = Task.objects.create(title=title, description=description, status=status)
+            new_task.type.set(type)
+            return redirect("TaskView", task_pk=new_task.pk)
         return render(request, "create.html", {"form": form})
 
 class UpdateTask(View):
@@ -46,7 +47,7 @@ class UpdateTask(View):
             "title": task.title,
             "description": task.description,
             "status": task.status,
-            "type": task.type,
+            'type': task.type.all(),
         })
         return render(request, 'update.html', {'form': form})
     def post(self,request,*args,**kwargs):
@@ -57,8 +58,9 @@ class UpdateTask(View):
             task.title = form.cleaned_data.get("title")
             task.description = form.cleaned_data.get("description")
             task.status = form.cleaned_data.get("status")
-            task.type = form.cleaned_data.get("type")
+            type = form.cleaned_data.pop('type')
             task.save()
+            task.type.set(type)
             return redirect('IndexView')
         return render(request, 'update.html', {"form": form})
 

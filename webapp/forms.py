@@ -8,7 +8,7 @@ from webapp.models import Task, TaskType, TaskStatus
 
 
 class TaskForm(forms.ModelForm):
-    type = forms.ModelChoiceField(queryset=TaskType.objects.all())
+    type = forms.ModelMultipleChoiceField(queryset=TaskType.objects.all())
     status = forms.ModelChoiceField(queryset=TaskStatus.objects.all())
     class Meta:
         model = Task

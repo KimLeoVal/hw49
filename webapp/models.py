@@ -16,8 +16,6 @@ class Task(BaseModel):
     description = models.TextField(max_length=2000, null=True, blank=True, )
     status = models.ForeignKey('webapp.TaskStatus', related_name='statuses', on_delete=models.CASCADE,
                                verbose_name='Статус')
-    type_old = models.ForeignKey('webapp.TaskType', related_name='types_old', on_delete=models.CASCADE,
-                               verbose_name='Тип')
     type = models.ManyToManyField('webapp.TaskType',related_name='types',blank=True)
     def __str__(self):
         return f'{self.title}'
