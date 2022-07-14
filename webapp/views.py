@@ -30,11 +30,8 @@ class CreateTask(View):
     def post(self, request, *args, **kwargs):
         form = TaskForm(data=request.POST)
         if form.is_valid():
-            title = form.cleaned_data.get("title")
-            description = form.cleaned_data.get("description")
-            status = form.cleaned_data.get("status")
             type = form.cleaned_data.pop('type')
-            new_task = Task.objects.create(title=title, description=description, status=status)
+            new_task = form.save()
             new_task.type.set(type)
             return redirect("TaskView", task_pk=new_task.pk)
         return render(request, "create.html", {"form": form})
