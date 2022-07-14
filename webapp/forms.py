@@ -2,13 +2,15 @@ from pyexpat import model
 
 
 from django import forms
-from django.forms import widgets
-from select import select
+from django.core import validators
 
+from CustomValidators import special_chars, special_words
 from webapp.models import Task, TaskType, TaskStatus
 
 
 class TaskForm(forms.ModelForm):
+    title = forms.CharField(max_length=20,validators=(special_chars,))
+    description = forms.CharField(max_length=2000,validators=(special_words,), widget = forms.Textarea)
     type = forms.ModelMultipleChoiceField(queryset=TaskType.objects.all(),widget=forms.CheckboxSelectMultiple)
     status = forms.ModelChoiceField(queryset=TaskStatus.objects.all())
     class Meta:

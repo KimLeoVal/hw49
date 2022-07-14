@@ -52,9 +52,6 @@ class UpdateTask(View):
         task = get_object_or_404(Task, pk=pk)
         form = TaskForm(data=request.POST,instance=task)
         if form.is_valid():
-            # task.title = form.cleaned_data.get("title")
-            # task.description = form.cleaned_data.get("description")
-            # task.status = form.cleaned_data.get("status")
             type = form.cleaned_data.pop('type')
             task = form.save()
             task.type.set(type)
