@@ -3,7 +3,7 @@ from pyexpat import model
 from django import forms
 from django.core import validators
 
-from CustomValidators import special_chars, special_words, check_count, check_status
+from .CustomValidators import special_chars, special_words, check_count, check_status
 from webapp.models import Task, TaskType, TaskStatus
 
 

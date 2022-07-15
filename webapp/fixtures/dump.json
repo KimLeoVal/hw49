@@ -4,11 +4,14 @@
     "pk": 1,
     "fields": {
         "created_ad": "2022-07-09T08:22:09.610Z",
-        "updated_ad": "2022-07-09T08:22:09.610Z",
+        "updated_ad": "2022-07-12T19:04:39.172Z",
         "title": "Task1",
         "description": "Task1Task1Task1",
         "status": 1,
-        "type": 1
+        "type": [
+            4,
+            5
+        ]
     }
 },
 {
@@ -20,7 +23,9 @@
         "title": "Task2",
         "description": "Task2Task2Task2",
         "status": 2,
-        "type": 1
+        "type": [
+            1
+        ]
     }
 },
 {
@@ -32,7 +37,9 @@
         "title": "Task3",
         "description": "Task3Task3Task3",
         "status": 3,
-        "type": 1
+        "type": [
+            1
+        ]
     }
 },
 {
@@ -44,7 +51,9 @@
         "title": "Bug1",
         "description": "Bug1Bug1Bug1",
         "status": 1,
-        "type": 4
+        "type": [
+            4
+        ]
     }
 },
 {
@@ -56,7 +65,9 @@
         "title": "Bug2",
         "description": "Bug2Bug2Bug2",
         "status": 2,
-        "type": 4
+        "type": [
+            4
+        ]
     }
 },
 {
@@ -68,7 +79,78 @@
         "title": "Task4",
         "description": "Task4Task4Task4",
         "status": 3,
-        "type": 5
+        "type": [
+            5
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 7,
+    "fields": {
+        "created_ad": "2022-07-12T12:13:47.611Z",
+        "updated_ad": "2022-07-12T12:13:47.611Z",
+        "title": "1",
+        "description": "222",
+        "status": 1,
+        "type": []
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 8,
+    "fields": {
+        "created_ad": "2022-07-12T12:14:17.302Z",
+        "updated_ad": "2022-07-12T12:14:17.302Z",
+        "title": "11111",
+        "description": "11111",
+        "status": 1,
+        "type": []
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 11,
+    "fields": {
+        "created_ad": "2022-07-12T12:47:12.551Z",
+        "updated_ad": "2022-07-15T13:55:54.983Z",
+        "title": "111",
+        "description": "111",
+        "status": 1,
+        "type": [
+            1,
+            5
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 25,
+    "fields": {
+        "created_ad": "2022-07-15T13:55:34.442Z",
+        "updated_ad": "2022-07-15T13:55:34.443Z",
+        "title": "sfasdf",
+        "description": "asdfasdf",
+        "status": 1,
+        "type": [
+            1,
+            4
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 26,
+    "fields": {
+        "created_ad": "2022-07-15T13:55:45.239Z",
+        "updated_ad": "2022-07-15T13:55:45.239Z",
+        "title": "asdfasdfasd",
+        "description": "afsdasdfasdfasdfas",
+        "status": 2,
+        "type": [
+            1,
+            4
+        ]
     }
 },
 {
