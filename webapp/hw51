@@ -1,0 +1,16 @@
+from datetime import timedelta
+from django.utils import timezone
+from django.db.models import Q
+
+1) Task.objects.filter(status__title__exact="Done").filter(updated_at__date__gte=(timezone.now()-timedelta(days=30)))
+
+2)
+q1 = Q(status__title__in=('Done','In Process'))
+q2 = Q(type__title__in=('Enhancement','Task'))
+Task.objects.filter(q1,q2).distinct()
+
+3)
+q1 = Q(title__icontains='bug')
+q2 = Q(type__title__iexact='bug')
+q3 = Q(status__title__iexact='done')
+Task.objects.filter(q1,q2).exclude(q3)
