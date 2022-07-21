@@ -1,19 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% include "partial/search.html" %}
 
 {% for task in tasks %}
     <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">Название:
         <a href="{% url 'TaskView' task.pk %}">{{ task.title }}</a></h5>
-{#    <h6 class="card-subtitle mb-2 text-muted">Название: {{ task.title }}</h6>#}
+    <h6 class="card-subtitle mb-2 text-muted">Название: {{ task.title }}</h6>
     <p class="card-text">Статус: {{ task.status }}</p>
     <a href="{% url 'UpdateTask' task.pk %}" class="card-link">Update</a>
     <a href="{% url 'DeleteTask' task.pk %}" class="card-link">Delete</a>
   </div>
 </div>
     {%  endfor %}
+{% if is_paginated %}
+        {% include "partial/pagination.html" %}
+    {% endif %}
 
-    <a href="#">Other</a>
 {%  endblock %}
+
+{#{% extends "base.html" %}#}
+{#{% load static %}#}
+{#{% block nav %}#}
+{#    <li class="nav-item">#}
+{#        <a class="nav-link" href="{% url "create_article" %}">Создание статьи</a>#}
+{#    </li>#}
+{#{% endblock %}#}
+{#{% block content %}#}
+{#    {% include "partial/search.html" %}#}
+{#    <h1>Задачи</h1>#}
+{#    <div class="row">#}
+{#        {% for article in articles %}#}
+{#            <div class="col-12 col-md-6 col-lg-4">#}
+{#                <div class="card">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">{{ article.title }}</h5>#}
+{#                        <a href="{% url "article_view" article.pk %}" class="card-link">Подробнее</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% empty %}#}
+{#        {% endfor %}#}
+    {% if is_paginated %}
+        {% include "partial/pagination.html" %}
+    {% endif %}
+{#    </div>#}
+{#{% endblock %}#}
+

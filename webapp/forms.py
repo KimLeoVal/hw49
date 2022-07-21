@@ -17,3 +17,6 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = '__all__'
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=50, required=False, label='Найти')

@@ -1,23 +1,60 @@
+from django.db.models import Q
 from django.db.models.functions import Lower
 from django.http import QueryDict
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
-from webapp.forms import TaskForm
+from webapp.forms import TaskForm, SearchForm
 from webapp.models import Task
 
 
-class IndexView(TemplateView):
-    def get(self, request):
-        tasks = Task.objects.all()
-        return render(request, 'index.html', {'tasks': tasks})
+class IndexView(ListView):
+    model = Task
+    template_name = "index.html"
+    context_object_name = "tasks"
+    ordering = "-updated_at"
+    paginate_by = 5
 
+    def get(self, request, *args, **kwargs):
+        self.form = self.get_search_form()
+        self.search_value = self.get_search_value()
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.search_value:
+            return Task.objects.filter(
+                Q(title__icontains=self.search_value) | Q(description__icontains=self.search_value))
+        return Task.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context["form"] = self.form
+        if self.search_value:
+            query = urlencode({'search': self.search_value})
+            context['query'] = query
+            context['search'] = self.search_value
+        return context
+
+    def get_search_form(self):
+        return SearchForm(self.request.GET)
+
+    def get_search_value(self):
+        if self.form.is_valid():
+            return self.form.cleaned_data.get("search")
+
+
+# class IndexView(TemplateView):
+#     def get(self, request):
+#         tasks = Task.objects.all()
+#         return render(request, 'index.html', {'tasks': tasks})
 
 
 class TaskView(TemplateView):
     template_name = 'task.html'
-    def get_context_data(self,  **kwargs):
+
+    def get_context_data(self, **kwargs):
         kwargs['task'] = get_object_or_404(Task, pk=kwargs['task_pk'])
         return super().get_context_data(**kwargs)
 
@@ -36,8 +73,9 @@ class CreateTask(View):
             return redirect("TaskView", task_pk=new_task.pk)
         return render(request, "create.html", {"form": form})
 
+
 class UpdateTask(View):
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
         task = get_object_or_404(Task, pk=pk)
         form = TaskForm(initial={
@@ -47,10 +85,11 @@ class UpdateTask(View):
             'type': task.type.all(),
         })
         return render(request, 'update.html', {'form': form})
-    def post(self,request,*args,**kwargs):
+
+    def post(self, request, *args, **kwargs):
         pk = kwargs['pk']
         task = get_object_or_404(Task, pk=pk)
-        form = TaskForm(data=request.POST,instance=task)
+        form = TaskForm(data=request.POST, instance=task)
         if form.is_valid():
             type = form.cleaned_data.pop('type')
             task = form.save()
@@ -60,15 +99,15 @@ class UpdateTask(View):
 
 
 class DeleteTask(View):
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
         task = get_object_or_404(Task, pk=pk)
-        return render(request, 'delete.html',{'task':task})
-    def post(self,request,*args,**kwargs):
+        return render(request, 'delete.html', {'task': task})
+
+    def post(self, request, *args, **kwargs):
         pk = kwargs['pk']
         task = get_object_or_404(Task, pk=pk)
-        if request.POST.get('Yes')=='Да':
+        if request.POST.get('Yes') == 'Да':
             task.delete()
         return redirect('IndexView')
 #
-
