@@ -154,6 +154,78 @@
     }
 },
 {
+    "model": "webapp.task",
+    "pk": 27,
+    "fields": {
+        "created_ad": "2022-07-21T16:57:09.449Z",
+        "updated_ad": "2022-07-21T16:57:09.449Z",
+        "title": "task11",
+        "description": "afdasfsd",
+        "status": 1,
+        "type": [
+            1,
+            4
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 28,
+    "fields": {
+        "created_ad": "2022-07-21T16:57:21.133Z",
+        "updated_ad": "2022-07-21T16:57:21.133Z",
+        "title": "task23",
+        "description": "czxc",
+        "status": 2,
+        "type": [
+            1,
+            4
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 29,
+    "fields": {
+        "created_ad": "2022-07-21T16:57:34.707Z",
+        "updated_ad": "2022-07-21T16:57:34.707Z",
+        "title": "task34",
+        "description": "jghkjg",
+        "status": 1,
+        "type": [
+            1
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 30,
+    "fields": {
+        "created_ad": "2022-07-21T16:57:44.740Z",
+        "updated_ad": "2022-07-21T16:57:44.740Z",
+        "title": "task88",
+        "description": "cvbcv",
+        "status": 3,
+        "type": [
+            1
+        ]
+    }
+},
+{
+    "model": "webapp.task",
+    "pk": 31,
+    "fields": {
+        "created_ad": "2022-07-21T16:57:54.824Z",
+        "updated_ad": "2022-07-21T16:57:54.824Z",
+        "title": "task55",
+        "description": "cvbc",
+        "status": 1,
+        "type": [
+            4
+        ]
+    }
+},
+{
     "model": "webapp.tasktype",
     "pk": 1,
     "fields": {
