@@ -1,6 +1,5 @@
 from django.db.models import Q
-from django.db.models.functions import Lower
-from django.http import QueryDict
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.http import urlencode
 from django.views import View
@@ -43,12 +42,6 @@ class IndexView(ListView):
     def get_search_value(self):
         if self.form.is_valid():
             return self.form.cleaned_data.get("search")
-
-
-# class IndexView(TemplateView):
-#     def get(self, request):
-#         tasks = Task.objects.all()
-#         return render(request, 'index.html', {'tasks': tasks})
 
 
 class TaskView(TemplateView):
