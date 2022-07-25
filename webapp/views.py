@@ -11,7 +11,7 @@ from webapp.models import Task
 
 class IndexView(ListView):
     model = Task
-    template_name = "index.html"
+    template_name = "for_task/index.html"
     context_object_name = "tasks"
     ordering = "-updated_at"
     paginate_by = 5
@@ -45,7 +45,7 @@ class IndexView(ListView):
 
 
 class TaskView(TemplateView):
-    template_name = 'task.html'
+    template_name = 'for_task/task.html'
 
     def get_context_data(self, **kwargs):
         kwargs['task'] = get_object_or_404(Task, pk=kwargs['task_pk'])
@@ -55,7 +55,7 @@ class TaskView(TemplateView):
 class CreateTask(View):
     def get(self, request, *args, **kwargs):
         form = TaskForm()
-        return render(request, 'create.html', {'form': form})
+        return render(request, 'for_task/create.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = TaskForm(data=request.POST)
@@ -64,7 +64,7 @@ class CreateTask(View):
             new_task = form.save()
             new_task.type.set(type)
             return redirect("TaskView", task_pk=new_task.pk)
-        return render(request, "create.html", {"form": form})
+        return render(request, "for_task/create.html", {"form": form})
 
 
 class UpdateTask(View):
@@ -77,7 +77,7 @@ class UpdateTask(View):
             "status": task.status,
             'type': task.type.all(),
         })
-        return render(request, 'update.html', {'form': form})
+        return render(request, 'for_task/update.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         pk = kwargs['pk']
@@ -88,14 +88,14 @@ class UpdateTask(View):
             task = form.save()
             task.type.set(type)
             return redirect('IndexView')
-        return render(request, 'update.html', {"form": form})
+        return render(request, 'for_task/update.html', {"form": form})
 
 
 class DeleteTask(View):
     def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
         task = get_object_or_404(Task, pk=pk)
-        return render(request, 'delete.html', {'task': task})
+        return render(request, 'for_task/delete.html', {'task': task})
 
     def post(self, request, *args, **kwargs):
         pk = kwargs['pk']

@@ -47,3 +47,9 @@ class TaskStatus(models.Model):
         db_table = "Statuses"
         verbose_name = 'Статус'
         verbose_name_plural = 'Статусы'
+
+class Project(models.Model):
+    start = models.DateField(verbose_name='Дата начала')
+    end = models.DateField(null=True,verbose_name = 'Дата окончания')
+    title = models.CharField(max_length=30,verbose_name='Название')
+    description = models.TextField(max_length=2000,verbose_name='Описание')
