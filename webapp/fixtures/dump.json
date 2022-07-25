@@ -8,6 +8,7 @@
         "title": "Task1",
         "description": "Task1Task1Task1",
         "status": 1,
+        "project": 1,
         "type": [
             4,
             5
@@ -23,6 +24,7 @@
         "title": "Task2",
         "description": "Task2Task2Task2",
         "status": 2,
+        "project": 1,
         "type": [
             1
         ]
@@ -37,6 +39,7 @@
         "title": "Task3",
         "description": "Task3Task3Task3",
         "status": 3,
+        "project": 1,
         "type": [
             1
         ]
@@ -51,6 +54,7 @@
         "title": "Bug1",
         "description": "Bug1Bug1Bug1",
         "status": 1,
+        "project": 1,
         "type": [
             4
         ]
@@ -65,6 +69,7 @@
         "title": "Bug2",
         "description": "Bug2Bug2Bug2",
         "status": 2,
+        "project": 1,
         "type": [
             4
         ]
@@ -79,6 +84,7 @@
         "title": "Task4",
         "description": "Task4Task4Task4",
         "status": 3,
+        "project": 1,
         "type": [
             5
         ]
@@ -93,6 +99,7 @@
         "title": "1",
         "description": "222",
         "status": 1,
+        "project": 1,
         "type": []
     }
 },
@@ -105,6 +112,7 @@
         "title": "11111",
         "description": "11111",
         "status": 1,
+        "project": 1,
         "type": []
     }
 },
@@ -117,6 +125,7 @@
         "title": "111",
         "description": "111",
         "status": 1,
+        "project": 1,
         "type": [
             1,
             5
@@ -132,6 +141,7 @@
         "title": "sfasdf",
         "description": "asdfasdf",
         "status": 1,
+        "project": 1,
         "type": [
             1,
             4
@@ -147,6 +157,7 @@
         "title": "asdfasdfasd",
         "description": "afsdasdfasdfasdfas",
         "status": 2,
+        "project": 1,
         "type": [
             1,
             4
@@ -162,6 +173,7 @@
         "title": "task11",
         "description": "afdasfsd",
         "status": 1,
+        "project": 1,
         "type": [
             1,
             4
@@ -177,6 +189,7 @@
         "title": "task23",
         "description": "czxc",
         "status": 2,
+        "project": 1,
         "type": [
             1,
             4
@@ -192,6 +205,7 @@
         "title": "task34",
         "description": "jghkjg",
         "status": 1,
+        "project": 1,
         "type": [
             1
         ]
@@ -206,6 +220,7 @@
         "title": "task88",
         "description": "cvbcv",
         "status": 3,
+        "project": 1,
         "type": [
             1
         ]
@@ -220,6 +235,7 @@
         "title": "task55",
         "description": "cvbc",
         "status": 1,
+        "project": 1,
         "type": [
             4
         ]
@@ -265,6 +281,16 @@
     "pk": 3,
     "fields": {
         "status": "Done"
+    }
+},
+{
+    "model": "webapp.project",
+    "pk": 1,
+    "fields": {
+        "start": "2022-07-25",
+        "end": "2022-07-30",
+        "title": "Project1",
+        "description": "Project1Project1Project1Project1"
     }
 }
 ]

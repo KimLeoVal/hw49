@@ -8,7 +8,6 @@
   <div class="card-body">
     <h5 class="card-title">Название:
         <a href="{% url 'TaskView' task.pk %}">{{ task.title }}</a></h5>
-    <h6 class="card-subtitle mb-2 text-muted">Название: {{ task.title }}</h6>
     <p class="card-text">Статус: {{ task.status }}</p>
     <a href="{% url 'UpdateTask' task.pk %}" class="card-link">Update</a>
     <a href="{% url 'DeleteTask' task.pk %}" class="card-link">Delete</a>

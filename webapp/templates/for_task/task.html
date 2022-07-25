@@ -4,6 +4,8 @@
     <br>
     <i>Description:</i> <b>{{ task.description }}</b>
     <br>
+    <i>Project:</i> <b>{{ task.project }}</b>
+    <br>
     <i>Status:</i> <b>{{ task.status }}</b>
     <br>
     <i>Type: </i><b>{% for task_type in task.type.all %}
