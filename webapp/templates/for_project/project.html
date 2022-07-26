@@ -1,0 +1,13 @@
+{%  extends 'base.html' %}
+
+{%  block content %}
+<i>Name:</i> <b>{{ project.title }}</b>
+    <br>
+    <i>Description: </i><b>
+    {% for pro in project.task.all %}
+    {{ pro }}
+        <br>
+    {%  endfor %}</b>
+    <a href="{% url 'CreateProjectTask' project.pk %}">Создать задачу</a>
+
+{%  endblock %}

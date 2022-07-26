@@ -1,12 +1,13 @@
 from django.db.models import Q
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
-from webapp.forms import TaskForm, SearchForm
-from webapp.models import Task
+from webapp.forms import TaskForm, SearchForm, ProjectForm
+from webapp.models import Task, Project
 
 
 class IndexView(ListView):
@@ -52,19 +53,26 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CreateTask(View):
-    def get(self, request, *args, **kwargs):
-        form = TaskForm()
-        return render(request, 'for_task/create.html', {'form': form})
+class CreateTask(CreateView):
+    template_name = 'for_task/create.html'
 
-    def post(self, request, *args, **kwargs):
-        form = TaskForm(data=request.POST)
-        if form.is_valid():
-            type = form.cleaned_data.pop('type')
-            new_task = form.save()
-            new_task.type.set(type)
-            return redirect("TaskView", task_pk=new_task.pk)
-        return render(request, "for_task/create.html", {"form": form})
+    form_class = TaskForm
+
+    def get_success_url(self):
+        return reverse('TaskView', kwargs={'pk': self.object.pk})
+
+    # def get(self, request, *args, **kwargs):
+    #     form = TaskForm()
+    #     return render(request, 'for_task/create.html', {'form': form})
+    #
+    # def post(self, request, *args, **kwargs):
+    #     form = TaskForm(data=request.POST)
+    #     if form.is_valid():
+    #         type = form.cleaned_data.pop('type')
+    #         new_task = form.save()
+    #         new_task.type.set(type)
+    #         return redirect("TaskView", task_pk=new_task.pk)
+    #     return render(request, "for_task/create.html", {"form": form})
 
 
 class UpdateTask(View):
@@ -103,4 +111,33 @@ class DeleteTask(View):
         if request.POST.get('Yes') == 'Да':
             task.delete()
         return redirect('IndexView')
-#
+
+class ProjectView(ListView):
+    model = Project
+    template_name = "for_project/indexProject.html"
+    context_object_name = "projects"
+
+
+class DetailProjectView(DetailView):
+    template_name = 'for_project/project.html'
+    model = Project
+
+class CreateProject(CreateView):
+    template_name = 'for_project/create.html'
+    model = Project
+    form_class = ProjectForm
+
+    # def get_success_url(self):
+    #     return reverse('DetailProjectView', kwargs={'pk': self.object.pk})
+class CreateProjectTask(CreateView):
+    template_name = 'for_task/CreateTaskforProject.html'
+    form_class = TaskForm
+
+    def form_valid(self, form):
+        project = get_object_or_404(Project, pk = self.kwargs.get('pk'))
+        print(project)
+        form.instance.project = project
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('DetailProjectView',kwargs={'pk':self.object.project.pk})

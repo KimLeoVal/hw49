@@ -4,7 +4,7 @@ from django import forms
 from django.core import validators
 
 from .CustomValidators import special_chars, special_words, check_count, check_status
-from webapp.models import Task, TaskType, TaskStatus
+from webapp.models import Task, TaskType, TaskStatus, Project
 
 
 class TaskForm(forms.ModelForm):
@@ -16,7 +16,14 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = '__all__'
+        fields = ['title','description','type','status']
 
 class SearchForm(forms.Form):
     search = forms.CharField(max_length=50, required=False, label='Найти')
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+

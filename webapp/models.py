@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 TYPES = [('Task', 'задача'), ('Bug', 'ошибка'), ('Enhancement', 'улучшение')]
 STATUSES = [('New', 'новый'), ('In Progress', 'в процессе'), ('Done', 'выполнено')]
@@ -63,6 +64,9 @@ class Project(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def get_absolute_url(self):
+        return reverse('DetailProjectView', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = 'Проэкт'
