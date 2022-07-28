@@ -2,10 +2,10 @@ from django.core.paginator import Paginator, Page
 from django.db.models import Q
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from webapp.forms import TaskForm, SearchForm, ProjectForm, TaskForm1
 from webapp.models import Task, Project
@@ -113,18 +113,22 @@ class UpdateTask(UpdateView):
     #     return render(request, 'for_task/update.html', {"form": form})
 
 
-class DeleteTask(View):
-    def get(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        task = get_object_or_404(Task, pk=pk)
-        return render(request, 'for_task/delete.html', {'task': task})
-
-    def post(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        task = get_object_or_404(Task, pk=pk)
-        if request.POST.get('Yes') == 'Да':
-            task.delete()
-        return redirect('IndexView')
+class DeleteTask(DeleteView):
+    model = Task
+    template_name = 'for_task/delete.html'
+    context_object_name = 'task'
+    success_url = reverse_lazy('IndexView')
+    # def get(self, request, *args, **kwargs):
+    #     pk = kwargs['pk']
+    #     task = get_object_or_404(Task, pk=pk)
+    #     return render(request, 'for_task/delete.html', {'task': task})
+    #
+    # def post(self, request, *args, **kwargs):
+    #     pk = kwargs['pk']
+    #     task = get_object_or_404(Task, pk=pk)
+    #     if request.POST.get('Yes') == 'Да':
+    #         task.delete()
+    #     return redirect('IndexView')
 
 class ProjectView(ListView):
     model = Project
