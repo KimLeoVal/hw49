@@ -12,6 +12,9 @@
     <a href="{% url 'CreateProjectTask' project.pk %}">Создать задачу</a>
     <br>
     <a href="{% url 'UpdateProject' project.pk %}">Изменить проект</a>
+    <br>
+    <a href="{% url 'DeleteProject' project.pk %}">Удалить проект</a>
+
 
         {% if is_paginated %}
         {% include "partial/pagination.html" %}

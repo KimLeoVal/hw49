@@ -168,3 +168,9 @@ class UpdateProject(UpdateView):
     template_name = 'for_project/update.html'
     form_class = ProjectForm
     context_object_name = 'project'
+
+class DeleteProject(DeleteView):
+    model = Project
+    context_object_name = 'project'
+    template_name = 'for_project/delete.html'
+    success_url = reverse_lazy('ProjectView')
