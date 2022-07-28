@@ -1,12 +1,13 @@
+from django.core.paginator import Paginator, Page
 from django.db.models import Q
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
 
-from webapp.forms import TaskForm, SearchForm, ProjectForm
+from webapp.forms import TaskForm, SearchForm, ProjectForm, TaskForm1
 from webapp.models import Task, Project
 
 
@@ -55,12 +56,17 @@ class TaskView(TemplateView):
 
 class CreateTask(CreateView):
     template_name = 'for_task/create.html'
-
     form_class = TaskForm
 
     def get_success_url(self):
         return reverse('TaskView', kwargs={'pk': self.object.pk})
 
+class CreateTask1(CreateView):
+    template_name = 'for_task/create.html'
+    form_class = TaskForm1
+
+    def get_success_url(self):
+        return reverse('TaskView', kwargs={'task_pk': self.object.pk})
     # def get(self, request, *args, **kwargs):
     #     form = TaskForm()
     #     return render(request, 'for_task/create.html', {'form': form})
@@ -75,28 +81,36 @@ class CreateTask(CreateView):
     #     return render(request, "for_task/create.html", {"form": form})
 
 
-class UpdateTask(View):
-    def get(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        task = get_object_or_404(Task, pk=pk)
-        form = TaskForm(initial={
-            "title": task.title,
-            "description": task.description,
-            "status": task.status,
-            'type': task.type.all(),
-        })
-        return render(request, 'for_task/update.html', {'form': form})
+class UpdateTask(UpdateView):
+    model = Task
+    form_class = TaskForm
+    context_object_name = 'task'
+    template_name = 'for_task/update.html'
 
-    def post(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        task = get_object_or_404(Task, pk=pk)
-        form = TaskForm(data=request.POST, instance=task)
-        if form.is_valid():
-            type = form.cleaned_data.pop('type')
-            task = form.save()
-            task.type.set(type)
-            return redirect('IndexView')
-        return render(request, 'for_task/update.html', {"form": form})
+
+    def get_success_url(self):
+        return reverse('TaskView',kwargs={'task_pk':self.object.pk})
+    # def get(self, request, *args, **kwargs):
+    #     pk = kwargs['pk']
+    #     task = get_object_or_404(Task, pk=pk)
+    #     form = TaskForm(initial={
+    #         "title": task.title,
+    #         "description": task.description,
+    #         "status": task.status,
+    #         'type': task.type.all(),
+    #     })
+    #     return render(request, 'for_task/update.html', {'form': form})
+    #
+    # def post(self, request, *args, **kwargs):
+    #     pk = kwargs['pk']
+    #     task = get_object_or_404(Task, pk=pk)
+    #     form = TaskForm(data=request.POST, instance=task)
+    #     if form.is_valid():
+    #         type = form.cleaned_data.pop('type')
+    #         task = form.save()
+    #         task.type.set(type)
+    #         return redirect('IndexView')
+    #     return render(request, 'for_task/update.html', {"form": form})
 
 
 class DeleteTask(View):
@@ -116,11 +130,14 @@ class ProjectView(ListView):
     model = Project
     template_name = "for_project/indexProject.html"
     context_object_name = "projects"
+    paginate_by = 2
 
 
 class DetailProjectView(DetailView):
     template_name = 'for_project/project.html'
     model = Project
+
+
 
 class CreateProject(CreateView):
     template_name = 'for_project/create.html'
@@ -141,3 +158,9 @@ class CreateProjectTask(CreateView):
 
     def get_success_url(self):
         return reverse('DetailProjectView',kwargs={'pk':self.object.project.pk})
+
+class UpdateProject(UpdateView):
+    model = Project
+    template_name = 'for_project/update.html'
+    form_class = ProjectForm
+    context_object_name = 'project'
