@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, Page
 from django.db.models import Q
+from django.http import HttpResponseRedirect, Http404, HttpResponseNotFound
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -134,12 +135,26 @@ class ProjectView(ListView):
     model = Project
     template_name = "for_project/indexProject.html"
     context_object_name = "projects"
-    paginate_by = 2
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Project.objects.filter(is_deleted=False)
 
 
 class DetailProjectView(DetailView):
     template_name = 'for_project/project.html'
     model = Project
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        project = get_object_or_404(Project, pk=pk)
+        if not project.is_deleted:
+            context = {'project': project}
+            return self.render_to_response(context)
+        else:
+            return HttpResponseNotFound('Project Not Found')
+
+
 
 
 
@@ -174,3 +189,13 @@ class DeleteProject(DeleteView):
     context_object_name = 'project'
     template_name = 'for_project/delete.html'
     success_url = reverse_lazy('ProjectView')
+
+class SoftDeleteProject(View):
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
+        project.is_deleted = True
+        project.save()
+        return redirect('ProjectView')
+
+
