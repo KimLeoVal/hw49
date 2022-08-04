@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, Page
 from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, HttpResponseNotFound
@@ -55,14 +56,14 @@ class TaskView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
-class CreateTask(CreateView):
+class CreateTask(LoginRequiredMixin,CreateView):
     template_name = 'for_task/create.html'
     form_class = TaskForm
 
     def get_success_url(self):
-        return reverse('TaskView', kwargs={'pk': self.object.pk})
+        return reverse('webapp:TaskView', kwargs={'pk': self.object.pk})
 
-class CreateTask1(CreateView):
+class CreateTask1(LoginRequiredMixin,CreateView):
     template_name = 'for_task/create.html'
     form_class = TaskForm1
 
@@ -82,7 +83,7 @@ class CreateTask1(CreateView):
     #     return render(request, "for_task/create.html", {"form": form})
 
 
-class UpdateTask(UpdateView):
+class UpdateTask(LoginRequiredMixin,UpdateView):
     model = Task
     form_class = TaskForm
     context_object_name = 'task'
@@ -90,7 +91,7 @@ class UpdateTask(UpdateView):
 
 
     def get_success_url(self):
-        return reverse('TaskView',kwargs={'task_pk':self.object.pk})
+        return reverse('webapp:TaskView',kwargs={'task_pk':self.object.pk})
     # def get(self, request, *args, **kwargs):
     #     pk = kwargs['pk']
     #     task = get_object_or_404(Task, pk=pk)
@@ -114,7 +115,7 @@ class UpdateTask(UpdateView):
     #     return render(request, 'for_task/update.html', {"form": form})
 
 
-class DeleteTask(DeleteView):
+class DeleteTask(LoginRequiredMixin,DeleteView):
     model = Task
     template_name = 'for_task/delete.html'
     context_object_name = 'task'
@@ -158,14 +159,14 @@ class DetailProjectView(DetailView):
 
 
 
-class CreateProject(CreateView):
+class CreateProject(LoginRequiredMixin,CreateView):
     template_name = 'for_project/create.html'
     model = Project
     form_class = ProjectForm
 
     # def get_success_url(self):
     #     return reverse('DetailProjectView', kwargs={'pk': self.object.pk})
-class CreateProjectTask(CreateView):
+class CreateProjectTask(LoginRequiredMixin,CreateView):
     template_name = 'for_task/CreateTaskforProject.html'
     form_class = TaskForm
 
@@ -176,26 +177,26 @@ class CreateProjectTask(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('DetailProjectView',kwargs={'pk':self.object.project.pk})
+        return reverse('webapp:DetailProjectView',kwargs={'pk':self.object.project.pk})
 
-class UpdateProject(UpdateView):
+class UpdateProject(LoginRequiredMixin,UpdateView):
     model = Project
     template_name = 'for_project/update.html'
     form_class = ProjectForm
     context_object_name = 'project'
 
-class DeleteProject(DeleteView):
+class DeleteProject(LoginRequiredMixin,DeleteView):
     model = Project
     context_object_name = 'project'
     template_name = 'for_project/delete.html'
-    success_url = reverse_lazy('ProjectView')
+    success_url = reverse_lazy('webapp:ProjectView')
 
-class SoftDeleteProject(View):
+class SoftDeleteProject(LoginRequiredMixin,View):
 
     def get(self, request, *args, **kwargs):
         project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
         project.is_deleted = True
         project.save()
-        return redirect('ProjectView')
+        return redirect('webapp:ProjectView')
 
 

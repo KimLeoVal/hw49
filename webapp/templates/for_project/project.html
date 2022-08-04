@@ -5,18 +5,19 @@
     <br>
     <i>Description: </i><b>
     {% for pro in project.project.all %}
-        <a href="{% url 'TaskView' pro.pk %}">{{ pro }}</a></h5>
+        <a href="{% url 'webapp:TaskView' pro.pk %}">{{ pro }}</a></h5>
 
         <br>
     {%  endfor %}</b>
-    <a href="{% url 'CreateProjectTask' project.pk %}">Создать задачу</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'webapp:CreateProjectTask' project.pk %}">Создать задачу</a>
     <br>
-    <a href="{% url 'UpdateProject' project.pk %}">Изменить проект</a>
+    <a href="{% url 'webapp:UpdateProject' project.pk %}">Изменить проект</a>
     <br>
-    <a href="{% url 'DeleteProject' project.pk %}">Удалить проект</a>
+    <a href="{% url 'webapp:DeleteProject' project.pk %}">Удалить проект</a>
     <br>
-    <a href="{% url 'SoftDeleteProject' project.pk %}">Мягкое удаление</a>
-
+    <a href="{% url 'webapp:SoftDeleteProject' project.pk %}">Мягкое удаление</a>
+{%  endif %}
 
         {% if is_paginated %}
         {% include "partial/pagination.html" %}

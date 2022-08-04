@@ -7,10 +7,13 @@
     <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">Название:
-        <a href="{% url 'TaskView' task.pk %}">{{ task.title }}</a></h5>
+
+        <a href="{% url 'webapp:TaskView' task.pk %}">{{ task.title }}</a></h5>
     <p class="card-text">Статус: {{ task.status }}</p>
-    <a href="{% url 'UpdateTask' task.pk %}" class="card-link">Update</a>
-    <a href="{% url 'DeleteTask' task.pk %}" class="card-link">Delete</a>
+      {% if user.is_authenticated %}
+    <a href="{% url 'webapp:UpdateTask' task.pk %}" class="card-link">Update</a>
+    <a href="{% url 'webapp:DeleteTask' task.pk %}" class="card-link">Delete</a>
+      {% endif %}
   </div>
 </div>
     {%  endfor %}
