@@ -12,8 +12,8 @@ from django.shortcuts import redirect
 
 class MyUserCreationForm(UserCreationForm):
     email = forms.EmailField(max_length=200, required=True, validators=[validate_email])
-    first_name = forms.CharField(max_length=20, required=False)
-    last_name = forms.CharField(max_length=20, required=False)
+    # first_name = forms.CharField(max_length=20, required=False)
+    # last_name = forms.CharField(max_length=20, required=False)
 
     class Meta:
         model = User

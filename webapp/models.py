@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
@@ -65,6 +66,7 @@ class Project(models.Model):
     title = models.CharField(max_length=30, verbose_name='Название')
     description = models.TextField(max_length=2000, verbose_name='Описание')
     is_deleted = models.BooleanField(null=True,blank=True,default=False,verbose_name='Мягкое удаление')
+    user = models.ManyToManyField(get_user_model(),verbose_name='Пользователь',related_name='projects')
 
     def __str__(self):
         return f'{self.title}'
