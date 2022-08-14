@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.paginator import Paginator, Page
 from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, HttpResponseNotFound
@@ -9,7 +9,7 @@ from django.utils.http import urlencode
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from webapp.forms import TaskForm, SearchForm, ProjectForm, TaskForm1
+from webapp.forms import TaskForm, SearchForm, ProjectForm, TaskForm1, UserForm, ProjectFormUser
 from webapp.models import Task, Project
 
 
@@ -136,7 +136,7 @@ class ProjectView(ListView):
     model = Project
     template_name = "for_project/indexProject.html"
     context_object_name = "projects"
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         return Project.objects.filter(is_deleted=False)
@@ -159,20 +159,50 @@ class DetailProjectView(DetailView):
 
 
 
-class CreateProject(LoginRequiredMixin,CreateView):
+class CreateProject(PermissionRequiredMixin,CreateView):
     template_name = 'for_project/create.html'
     model = Project
-    form_class = ProjectForm
+    form_class = ProjectFormUser
+    permission_required = 'webapp.add_project'
+
+
+
+    def form_valid(self, form):
+        project = form.save()
+        user_id = self.request.user
+        project.user.add(user_id)
+        project.save()
+        return super().form_valid(form)
+        # project = form.save()
+        # user_id = self.request.user
+        # print(user_id)
+        # print(project)
+        # project.user.add(user_id)
+        # print(project.user)
+        # project.save()
+        # print(project.user)
+        # return redirect('webapp:DetailProjectView',pk= project.pk)
+
+
+
+
 
     # def get_success_url(self):
     #     return reverse('DetailProjectView', kwargs={'pk': self.object.pk})
-class CreateProjectTask(LoginRequiredMixin,CreateView):
+class CreateProjectTask(PermissionRequiredMixin,CreateView):
     template_name = 'for_task/CreateTaskforProject.html'
     form_class = TaskForm
 
+    def has_permission(self):
+        """
+        Override this method to customize the way permissions are checked.
+        """
+        perms = self.get_permission_required() or self.get_object().user == self.request.user
+        return self.request.user.has_perms(perms)
+
+
     def form_valid(self, form):
         project = get_object_or_404(Project, pk = self.kwargs.get('pk'))
-        print(project)
         form.instance.project = project
         return super().form_valid(form)
 
@@ -198,5 +228,25 @@ class SoftDeleteProject(LoginRequiredMixin,View):
         project.is_deleted = True
         project.save()
         return redirect('webapp:ProjectView')
+
+class AddUserInProject(LoginRequiredMixin,UpdateView):
+    model = Project
+    template_name = 'for_project/adddeluser.html'
+    form_class = UserForm
+    context_object_name = 'project'
+
+    def form_valid(self, form):
+        pk = self.kwargs.get('pk')
+        project= get_object_or_404(Project,pk = pk)
+        user_id = self.request.POST.get('user')
+        project.user.add(user_id)
+        project.save()
+        return super().form_valid(form)
+
+
+
+
+
+
 
 

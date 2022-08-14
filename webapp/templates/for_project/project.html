@@ -6,18 +6,31 @@
     <i>Description: </i><b>
     {% for pro in project.project.all %}
         <a href="{% url 'webapp:TaskView' pro.pk %}">{{ pro }}</a></h5>
-
         <br>
     {%  endfor %}</b>
-    {% if user.is_authenticated %}
+    <br>
+    <i>Users: </i><b>
+    {% for user in project.user.all %}
+    {{ user }}
+    {%  endfor %}
+    <br>
+    <br>
+
     <a href="{% url 'webapp:CreateProjectTask' project.pk %}">Создать задачу</a>
     <br>
+{% if perms.webapp.add_project or perms.webapp.change_project or perms.webapp.delete_project %}
+
     <a href="{% url 'webapp:UpdateProject' project.pk %}">Изменить проект</a>
     <br>
     <a href="{% url 'webapp:DeleteProject' project.pk %}">Удалить проект</a>
     <br>
     <a href="{% url 'webapp:SoftDeleteProject' project.pk %}">Мягкое удаление</a>
-{%  endif %}
+    {% endif %}
+        <br>
+        <a href="{% url 'webapp:AddUserInProject' project.pk %}">Добавить/Удалить пользователя</a>
+        <br>
+
+
 
         {% if is_paginated %}
         {% include "partial/pagination.html" %}

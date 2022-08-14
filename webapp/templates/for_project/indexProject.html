@@ -7,7 +7,8 @@
   <div class="card-body">
     <h5 class="card-title">Название:
         <a href="{% url 'webapp:DetailProjectView' project.pk %} ">{{ project.title }}</a></h5>
-      {% if user.is_authenticated %}
+
+      {% if perms.webapp.add_project or perms.webapp.change_project or perms.webapp.delete_project %}
     <a href="{% url 'webapp:UpdateProject' project.pk %}" class="card-link">Update</a>
     <a href="{% url 'webapp:DeleteProject' project.pk %}" class="card-link">Delete</a>
     <a href="{% url 'webapp:SoftDeleteProject' project.pk %}" class="card-link">SoftDelete</a>
@@ -22,5 +23,6 @@
         {% include "partial/pagination.html" %}
     {% endif %}
 
-
+  {{ user }}
+  {{ user.groups.group_id }}
 {% endblock %}

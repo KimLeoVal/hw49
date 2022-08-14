@@ -1,7 +1,11 @@
 from pyexpat import model
 
 from django import forms
+from django.contrib import auth
+from django.contrib.auth import get_user_model
 from django.core import validators
+from django.forms import widgets
+from django.http import request
 
 from .CustomValidators import special_chars, special_words, check_count, check_status
 from webapp.models import Task, TaskType, TaskStatus, Project
@@ -36,5 +40,16 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         exclude = ['is_deleted']
+
+class ProjectFormUser(forms.ModelForm):
+    class Meta:
+        model = Project
+        exclude = ['is_deleted','user']
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['user']
+
 
 
