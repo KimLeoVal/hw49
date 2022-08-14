@@ -15,8 +15,9 @@
     {%  endfor %}
     <br>
     <br>
-
+{% if perms.webapp.add_task and user in project.user.all %}
     <a href="{% url 'webapp:CreateProjectTask' project.pk %}">Создать задачу</a>
+    {% endif %}
     <br>
 
 {% if perms.webapp.add_project or perms.webapp.change_project or perms.webapp.delete_project %}

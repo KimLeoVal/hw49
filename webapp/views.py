@@ -120,7 +120,7 @@ class DeleteTask(PermissionRequiredMixin,DeleteView):
     model = Task
     template_name = 'for_task/delete.html'
     context_object_name = 'task'
-    success_url = reverse_lazy('IndexView')
+    success_url = reverse_lazy('webapp:IndexView')
     permission_required = 'webapp.delete_task'
     # def get(self, request, *args, **kwargs):
     #     pk = kwargs['pk']
@@ -220,8 +220,8 @@ class UpdateProject(PermissionRequiredMixin,UpdateView):
     context_object_name = 'project'
     permission_required = 'webapp.change_project'
 
-    def has_permission(self):
-        return super().has_permission() or self.get_object().user == self.request.user
+    # def has_permission(self):
+    #     return super().has_permission() or self.get_object().user == self.request.user
 
 class DeleteProject(PermissionRequiredMixin,DeleteView):
     model = Project
@@ -255,6 +255,8 @@ class AddUserInProject(PermissionRequiredMixin,UpdateView):
         project.user.add(user_id,author)
         project.save()
         return redirect('webapp:DetailProjectView', pk=project.pk)
+
+
 
 
 #
