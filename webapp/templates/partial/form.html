@@ -2,7 +2,11 @@
 {% csrf_token %}
 
 {% for field in form %}
+{#    {{ user.pk }}#}
+{#    {{ field.value }}#}
+{#    {% if field.value == user.pk %}#}
    <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+{#    {% endif %}#}
    {% for error in field.errors %}
        <p class="text-danger">{{ error }}</p>
    {% endfor %}

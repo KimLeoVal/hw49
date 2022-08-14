@@ -173,11 +173,12 @@ class CreateProject(PermissionRequiredMixin,CreateView):
         project.user.add(user_id)
         project.save()
         return super().form_valid(form)
+
         # project = form.save()
         # user_id = self.request.user
         # print(user_id)
         # print(project)
-        # project.user.add(user_id)
+        # project.user.add(user_id,1)
         # print(project.user)
         # project.save()
         # print(project.user)
@@ -236,14 +237,17 @@ class AddUserInProject(LoginRequiredMixin,UpdateView):
     context_object_name = 'project'
 
     def form_valid(self, form):
-        pk = self.kwargs.get('pk')
-        project= get_object_or_404(Project,pk = pk)
+        # pk = self.kwargs.get('pk')
+        # project= get_object_or_404(Project,pk = pk)
+        project = form.save()
         user_id = self.request.POST.get('user')
-        project.user.add(user_id)
+        author=self.request.user.pk
+        project.user.add(user_id,author)
         project.save()
-        return super().form_valid(form)
+        return redirect('webapp:DetailProjectView', pk=project.pk)
 
 
+#
 
 
 
