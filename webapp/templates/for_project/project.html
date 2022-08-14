@@ -18,18 +18,24 @@
 
     <a href="{% url 'webapp:CreateProjectTask' project.pk %}">Создать задачу</a>
     <br>
+
 {% if perms.webapp.add_project or perms.webapp.change_project or perms.webapp.delete_project %}
 
+
     <a href="{% url 'webapp:UpdateProject' project.pk %}">Изменить проект</a>
+
     <br>
     <a href="{% url 'webapp:DeleteProject' project.pk %}">Удалить проект</a>
     <br>
     <a href="{% url 'webapp:SoftDeleteProject' project.pk %}">Мягкое удаление</a>
-    {% endif %}
+{#    {% endif %}#}
         <br>
+    {% endif %}
+
+{% if perms.webapp.change_project and user in project.user.all  %}
         <a href="{% url 'webapp:AddUserInProject' project.pk %}">Добавить/Удалить пользователя</a>
         <br>
-
+ {% endif %}
 
 
         {% if is_paginated %}

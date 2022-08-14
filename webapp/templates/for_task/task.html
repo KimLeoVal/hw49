@@ -13,7 +13,7 @@
     <br>
 
     <br>
-    {% if user.is_authenticated %}
+   {% if request.user in task.project.user.all %}
     <a href="{% url 'webapp:UpdateTask' task.pk %}">Update</a>
     <br>
     <a href="{% url 'webapp:DeleteTask' task.pk %}">Delete</a>

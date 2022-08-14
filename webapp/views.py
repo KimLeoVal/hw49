@@ -83,11 +83,12 @@ class CreateTask1(LoginRequiredMixin,CreateView):
     #     return render(request, "for_task/create.html", {"form": form})
 
 
-class UpdateTask(LoginRequiredMixin,UpdateView):
+class UpdateTask(PermissionRequiredMixin,UpdateView):
     model = Task
     form_class = TaskForm
     context_object_name = 'task'
     template_name = 'for_task/update.html'
+    permission_required = 'webapp.change_task'
 
 
     def get_success_url(self):
@@ -115,11 +116,12 @@ class UpdateTask(LoginRequiredMixin,UpdateView):
     #     return render(request, 'for_task/update.html', {"form": form})
 
 
-class DeleteTask(LoginRequiredMixin,DeleteView):
+class DeleteTask(PermissionRequiredMixin,DeleteView):
     model = Task
     template_name = 'for_task/delete.html'
     context_object_name = 'task'
     success_url = reverse_lazy('IndexView')
+    permission_required = 'webapp.delete_task'
     # def get(self, request, *args, **kwargs):
     #     pk = kwargs['pk']
     #     task = get_object_or_404(Task, pk=pk)
@@ -193,6 +195,7 @@ class CreateProject(PermissionRequiredMixin,CreateView):
 class CreateProjectTask(PermissionRequiredMixin,CreateView):
     template_name = 'for_task/CreateTaskforProject.html'
     form_class = TaskForm
+    permission_required = 'webapp.add_task'
 
     def has_permission(self):
         """
@@ -210,19 +213,25 @@ class CreateProjectTask(PermissionRequiredMixin,CreateView):
     def get_success_url(self):
         return reverse('webapp:DetailProjectView',kwargs={'pk':self.object.project.pk})
 
-class UpdateProject(LoginRequiredMixin,UpdateView):
+class UpdateProject(PermissionRequiredMixin,UpdateView):
     model = Project
     template_name = 'for_project/update.html'
     form_class = ProjectForm
     context_object_name = 'project'
+    permission_required = 'webapp.change_project'
 
-class DeleteProject(LoginRequiredMixin,DeleteView):
+    def has_permission(self):
+        return super().has_permission() or self.get_object().user == self.request.user
+
+class DeleteProject(PermissionRequiredMixin,DeleteView):
     model = Project
     context_object_name = 'project'
     template_name = 'for_project/delete.html'
     success_url = reverse_lazy('webapp:ProjectView')
+    permission_required = 'webapp.delete_project'
 
-class SoftDeleteProject(LoginRequiredMixin,View):
+class SoftDeleteProject(PermissionRequiredMixin,View):
+    permission_required = 'webapp.delete_project'
 
     def get(self, request, *args, **kwargs):
         project = get_object_or_404(Project, pk=self.kwargs.get('pk'))
@@ -230,11 +239,12 @@ class SoftDeleteProject(LoginRequiredMixin,View):
         project.save()
         return redirect('webapp:ProjectView')
 
-class AddUserInProject(LoginRequiredMixin,UpdateView):
+class AddUserInProject(PermissionRequiredMixin,UpdateView):
     model = Project
     template_name = 'for_project/adddeluser.html'
     form_class = UserForm
     context_object_name = 'project'
+    permission_required = 'webapp.change_project'
 
     def form_valid(self, form):
         # pk = self.kwargs.get('pk')
