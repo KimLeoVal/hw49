@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
-from django.contrib.auth import login as auth_login, login
+from django.contrib.auth import login as auth_login, login, get_user_model
 from django.shortcuts import render, redirect
 from django.template.context_processors import request
 from django.urls import reverse
@@ -72,14 +72,16 @@ def register_view(request, *args, **kwargs):
         form = MyUserCreationForm()
     return render(request, 'user_create.html', context={'form': form})
 
-class UsersView(PermissionRequiredMixin,ListView):
+class UsersView(ListView):
     template_name = 'usersall.html'
-    model = Profile
-    context_object_name = 'user'
+    model = get_user_model()
+    context_object_name = 'users'
+    # permission_required = 'accounts.view_user'
 
-class UserDetailView(PermissionRequiredMixin,DetailView):
+class UserDetailView(DetailView):
     template_name = 'user.html'
-    model = Profile
+    model = get_user_model()
     context_object_name = 'user'
+    # permission_required = 'accounts.view_user'
 
 
