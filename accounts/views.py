@@ -1,12 +1,16 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login as auth_login, login
 from django.shortcuts import render, redirect
 from django.template.context_processors import request
+from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.generic import ListView, DetailView
 
 from accounts.forms import MyUserCreationForm
+from accounts.models import Profile
 
 
 class LoginView(LoginView):
@@ -67,3 +71,15 @@ def register_view(request, *args, **kwargs):
     else:
         form = MyUserCreationForm()
     return render(request, 'user_create.html', context={'form': form})
+
+class UsersView(PermissionRequiredMixin,ListView):
+    template_name = 'usersall.html'
+    model = Profile
+    context_object_name = 'user'
+
+class UserDetailView(PermissionRequiredMixin,DetailView):
+    template_name = 'user.html'
+    model = Profile
+    context_object_name = 'user'
+
+
