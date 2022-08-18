@@ -22,4 +22,5 @@
     <a href="{% url 'webapp:DetailProjectView' project.pk %}">{{ project }}</a>
 
     {% endfor %}
+    <li><a href="{% url 'accounts:UserChangeView' user.pk %}">Редактировать</a></li>
 {% endblock %}
