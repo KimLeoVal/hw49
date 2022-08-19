@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login as auth_login, login, get_user_model
@@ -137,4 +137,11 @@ class UserChangeView(UpdateView):
 
 
     def get_success_url(self):
-        return reverse('accounts:detail', kwargs={'pk': self.object.pk})
+        return reverse('accounts:UserDetailView', kwargs={'pk': self.object.pk})
+
+class UserPasswordChangeView(PasswordChangeView):
+
+    template_name = 'registration/password_change_form.html'
+
+    def get_success_url(self):
+        return reverse('accounts:UserDetailView', kwargs={'pk': self.request.user.pk})

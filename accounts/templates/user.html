@@ -23,4 +23,7 @@
 
     {% endfor %}
     <li><a href="{% url 'accounts:UserChangeView' user.pk %}">Редактировать</a></li>
+    <li><a href="{% url 'accounts:password_change'  %}">Смена пароля</a></li>
 {% endblock %}
+
+password_change
