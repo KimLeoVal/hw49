@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
-from django.contrib.auth import login as auth_login, login, get_user_model
+from django.contrib.auth import login as auth_login, login, get_user_model, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.template.context_processors import request
 from django.urls import reverse
@@ -118,9 +118,12 @@ class UserChangeView(UpdateView):
 
 
     def form_valid(self, form, profile_form):
-        response = super().form_valid(form)
-        profile_form.save()
-        return response
+        if self.request.user:
+            response = super().form_valid(form)
+            profile_form.save()
+            return response
+        else:
+            HttpResponseRedirect(self.get_success_url())
 
 
     def form_invalid(self, form, profile_form):
